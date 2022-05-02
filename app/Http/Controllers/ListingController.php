@@ -52,6 +52,8 @@ class ListingController extends Controller
         );
       }
 
+      $formFields['user_id'] = auth()->id();
+
       Listing::create($formFields);
 
       return redirect('/')->with(
@@ -68,6 +70,11 @@ class ListingController extends Controller
      // update listing data
     public function update(Request $request, Listing $listing) {
       
+      // make sure user is owner
+      if($listing->user_id != auth()->id()) {
+        abort(403, 'Un Authoraized Action');
+      }
+
       $formFields = $request->validate([
         'title' => 'required',
         'company' => 'required',
@@ -89,7 +96,24 @@ class ListingController extends Controller
 
     // delete listing
     public function destroy(Listing $listing) {
+      if($listing->user_id != auth()->id()) {
+        abort(403, 'Un Authoraized Action');
+      }
       $listing->delete();
       return redirect('/')->with('message', 'Listing Deleted successfully');
+    }
+
+    // manage listing
+    public function manage() {
+
+      // this method is giving me a warrning but it still works
+      // dd(auth()->user()->listings()->get());
+      
+      // found this method with tinker will use it to hide the warrning
+      $user = \App\Models\User::find(auth()->user()->id);
+      
+      return view('listings.manage',[
+        'listings' => $user->listings
+      ]);
     }
 }
