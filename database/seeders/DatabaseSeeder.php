@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Listing;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(5)->create();
+        // \App\Models\User::factory(5)->create();
         // Listing::create([
         //     'title' => 'Laravel Senior Developer', 
         //     'tags' => 'laravel, javascript',
@@ -34,6 +34,14 @@ class DatabaseSeeder extends Seeder
         //     'website' => 'https://www.starkindustries.com',
         //     'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam minima et illo reprehenderit quas possimus voluptas repudiandae cum expedita, eveniet aliquid, quam illum quaerat consequatur! Expedita ab consectetur tenetur delensiti?'
         // ]);
-        Listing::factory(6)->create();
+
+        $user = User::factory()->create([
+          'name' => 'Jhon Doe',
+          'email' => 'jhon@gmail.com'
+        ]);
+        Listing::factory(6)->create([
+          'user_id' => $user->id
+        ]);
+
     }
 }
