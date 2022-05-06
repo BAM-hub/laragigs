@@ -11,7 +11,7 @@
       <form method="POST" action="/listings/{{$listing->id}}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
-          <div class="mb-6">
+          {{-- <div class="mb-6">
               <label
                   for="company"
                   class="inline-block text-lg mb-2"
@@ -28,7 +28,7 @@
                     {{ $message }}
                 </p>
               @enderror
-          </div>
+          </div> --}}
   
           <div class="mb-6">
               <label for="title" class="inline-block text-lg mb-2"
