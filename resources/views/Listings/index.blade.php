@@ -11,6 +11,13 @@
     <x-listing-card :listing="$listing" />
   @endforeach
 </div>
+
+<ul class="flex mt-4 ml-4">
+  @foreach($companies as $company)
+    <x-all-companies :company="$company"/>
+  @endforeach
+</ul>
+
 <div class="mt-6 p-4">
   {{ $listings->links() }}
 </div>
