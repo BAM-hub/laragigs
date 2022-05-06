@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\User;
 use App\Models\Listing;
 use Illuminate\Database\Seeder;
@@ -35,13 +36,15 @@ class DatabaseSeeder extends Seeder
         //     'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam minima et illo reprehenderit quas possimus voluptas repudiandae cum expedita, eveniet aliquid, quam illum quaerat consequatur! Expedita ab consectetur tenetur delensiti?'
         // ]);
 
+        $company = Company::factory(2)->create();
         $user = User::factory()->create([
           'name' => 'Jhon Doe',
-          'email' => 'jhon@gmail.com'
+          'email' => 'jhon@gmail.com',
+          'company_id' => $company->id
         ]);
         Listing::factory(6)->create([
-          'user_id' => $user->id
+          'user_id' => $user->id,
+          'company_id' => $company->id
         ]);
-
     }
 }
