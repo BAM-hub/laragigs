@@ -16,7 +16,7 @@
           />
 
           <h3 class="text-2xl mb-2">{{ $listings->title }}</h3>
-          <div class="text-xl font-bold mb-4">{{ $listings->company }}</div>
+          <div class="text-xl font-bold mb-4">{{ $company->company_name }}</div>
 
           <x-listing-tags :tagsCsv="$listings->tags" />
 
@@ -48,7 +48,7 @@
           </div>
       </div>
     </x-card>
-    @if (auth()->user()->id == $listings->user_id)        
+    @if ( auth()->user() != null && auth()->user()->id == $listings->user_id)        
     <x-card class="mt-4 p-2 flex space-x-6">
       <a href="/listings/{{$listings->id}}/edit">
         <i class="fa-solid fa-pencil"></i> Edit
