@@ -3,30 +3,63 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\User;
+use App\Models\Company;
 use App\Models\Listing;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class ListingController extends Controller
 {
     // show all listings
     public function index() {
+
+        $listings = Listing::latest()->filter(
+          request(['tag', 'search', 'company'])
+        )->paginate(6);
+        // dd($listings->items);
+        // $ids = [];
+        // foreach($listings as $listing) {
+        //   if(!in_array($listing->company_id, $ids)) {
+        //     array_push($ids, $listing->company_id);
+          
+        //   }
+        //   // dd($listing);
+        // }
+        $companies = Company::all();
+        // $companies = Company::whereIn('id', $ids)->get();
+        // dd($companies);
+        foreach($listings as $listing) {
+          foreach($companies as $company) {
+            if($company->id == $listing->company_id)
+              $listing['company'] = $company->company_name;
+          }
+        }
+      
+        //dd($ids);
+        // dd($companies);
+        // dd($listings);
+
         return view('listings.index', [
-          'listings' => Listing::latest()->filter(
-            request(['tag', 'search'])
-            )->paginate(6)
+          'listings' => $listings,
+          'companies' => $companies
         ]);
     }
     
     // show single listing
     public function show(Listing $listing) {
+        $company = Company::find($listing->company_id);
         return view('listings.show', [
-          'listings' => $listing
+          'listings' => $listing,
+          'company' => $company
         ]); 
     }
 
     //show create form
     public function create() {
+      if(User::find(auth()->id())->company == null) {
+        return back()->with('message', 'You can\'t post a gig unless you are a company');
+      }
+
       return view('listings.create');
     }
 
@@ -34,11 +67,11 @@ class ListingController extends Controller
     public function store(Request $request) {
       $formFields = $request->validate([
         'title' => 'required',
-        'company' => ['required', Rule::unique(
-            'listings',
-            'company'
-            )
-        ],
+        // 'company' => ['required', Rule::unique(
+        //     'listings',
+        //     'company'
+        //     )
+        // ],
         'location' => 'required',
         'website' => 'required',
         'email' => ['required', 'email'],
@@ -52,7 +85,9 @@ class ListingController extends Controller
         );
       }
 
+      $formFields['company_id'] = auth()->user()->company_id;
       $formFields['user_id'] = auth()->id();
+      // $formFields['company'] = User::find(auth()->id())->company;
 
       Listing::create($formFields);
 
@@ -77,7 +112,7 @@ class ListingController extends Controller
 
       $formFields = $request->validate([
         'title' => 'required',
-        'company' => 'required',
+        // 'company' => 'required',
         'location' => 'required',
         'website' => 'required',
         'email' => ['required', 'email'],
@@ -110,7 +145,7 @@ class ListingController extends Controller
       // dd(auth()->user()->listings()->get());
       
       // found this method with tinker will use it to hide the warrning
-      $user = \App\Models\User::find(auth()->user()->id);
+      $user = User::find(auth()->user()->id);
       
       return view('listings.manage',[
         'listings' => $user->listings
