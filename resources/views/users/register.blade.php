@@ -82,8 +82,24 @@
                 </p>
               @enderror
             </div>
-
-            <div class="mb-6">
+            <label
+              for="company"
+              class="inline-block text-lg mb-2"
+              >Company Name</label
+            >
+                <input
+                    type="text"
+                    class="border border-gray-200 rounded p-2 w-full"
+                    name="company"
+                    value="{{old('company')}}"
+                    placeholder="Leave Empty if your only looking for a job"
+                />
+                @error('company')
+                <p class="text-red-500 text-xs mt-1">
+                    {{ $message }}
+                </p>
+                @enderror
+            <div class="mb-6 mt-6">
                 <button
                     type="submit"
                     class="bg-laravel text-white rounded py-2 px-4 hover:bg-black"
