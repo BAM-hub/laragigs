@@ -24,10 +24,17 @@ class Listing extends Model
             ->orWhere('description', 'like', '%' . request('search') . '%')
             ->orWhere('tags', 'like', '%' . request('search') . '%');
         }
+
+        if($filters['company'] ?? false) {
+          $query->where('company_id', '=', request('company'));
+        }
     }
 
     // relationship to user
     public function user() {
       return $this->belongsTo(User::class, 'user_id');
+    }
+    public function company() {
+      return $this->belongsTo(Company::class, 'comapny_id');
     }
 }
