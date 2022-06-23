@@ -3,7 +3,7 @@
 
 # LaraGigs
 Laragigs a website for posting jobs aka gigs built with laravel.
-The Project is based on a youtube tutorial by Traversy Media I made Changes to the project that I will discuss later. 
+The Project is based on a youtube crash course by Traversy Media I made Changes to the project that I will discuss later. 
 
 ## :man_technologist: Built With
 * Laravel
@@ -30,12 +30,32 @@ The Project is based on a youtube tutorial by Traversy Media I made Changes to t
 <br/>
 
 ## App Preview
+### Main Page
 ![laragigs](https://user-images.githubusercontent.com/78625404/175166679-5300724a-9bd9-438c-8e32-652fbb3808d3.png)
+### Listing Page
+![laragigsCard](https://user-images.githubusercontent.com/78625404/175177625-defda451-f35d-4765-ad02-c679326d7e35.png)
+### Login Page
+![lginLaragigs](https://user-images.githubusercontent.com/78625404/175177867-a6917e96-ced7-4731-999d-9ea4a8ba5da1.png)
 
 <br />
 
 ## My Changes
-1. Added Query Sort By Company
+
+# High Level Overview.
+
+# Mainly The changes Where about normlization So this is the way I converted the Schema
+![laragigsDbDiagram](https://user-images.githubusercontent.com/78625404/175183675-340e5f51-500a-47c0-8d6f-9c9c60a059c5.png)
+
+## After Changing the Schema I had to update The code Base To go with it Other Changes I made.
+* Sorting Added Query Search by company name And Tags to sort listings by company.
+* Removed The ability To change the company name Company Emails Rarely change.
+* Quality Of life aka UX Changes: Hide the register button for signed useres.
+## The Changes are explained in more detail in the next section.
+<br />
+
+# Detailed Code Examples.
+
+1. Added Query Search By Company name
 ```blade
 @props(['company'])
 <li
